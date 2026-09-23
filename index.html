@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0a1f3d">
+  <title>BLG无畏契约分部粉丝讨论区 · 2026新春</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif; -webkit-tap-highlight-color: transparent; }
+    html { -webkit-text-size-adjust: 100%; }
+    body { background-color: #e6f0ff; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 24px 16px 220px 16px; padding-bottom: calc(220px + env(safe-area-inset-bottom, 0px)); }
+    .forum-container { max-width: 1100px; width: 100%; background-color: #ffffff; border-radius: 32px; box-shadow: 0 20px 40px rgba(0, 80, 200, 0.08), 0 6px 12px rgba(0, 60, 150, 0.05); overflow: hidden; border: 1px solid #cce4ff; }
+    .forum-header { position: relative; background: linear-gradient(145deg, #0a1f3d 0%, #123a6b 50%, #0a1f3d 100%); padding: 32px 24px 44px 24px; border-bottom: 3px solid #ffd966; text-align: center; overflow: hidden; }
+    #fireworksCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+    .top-origin { position: relative; z-index: 2; display: inline-block; font-size: 0.88rem; font-weight: 700; color: #ffe9a8; background: rgba(255, 217, 102, 0.12); padding: 5px 20px; border-radius: 30px; border: 1px solid rgba(255, 217, 102, 0.45); letter-spacing: 0.6px; margin-bottom: 18px; text-shadow: 0 0 8px rgba(255, 200, 80, 0.5); }
+    .top-origin span { color: #ffd966; font-weight: 800; text-shadow: 0 0 12px rgba(255, 217, 102, 0.8); }
+    .forum-header h1, .forum-header .subhead { position: relative; z-index: 2; }
+    .forum-header h1 { font-size: clamp(1.5rem, 5vw, 2.5rem); font-weight: 800; letter-spacing: -0.5px; color: #ffffff; text-shadow: 0 0 12px rgba(255, 217, 102, 0.9), 0 0 24px rgba(255, 180, 50, 0.7), 2px 2px 0 #b8860b; margin-bottom: 8px; word-break: break-word; line-height: 1.25; }
+    .forum-header .subhead { display: inline-block; background-color: rgba(255, 217, 102, 0.15); color: #ffe9a8; font-weight: 700; font-size: clamp(0.8rem, 2.6vw, 1rem); padding: 6px 22px; border-radius: 40px; letter-spacing: 0.8px; border: 1px solid rgba(255, 217, 102, 0.55); box-shadow: 0 0 16px rgba(255, 217, 102, 0.35), inset 0 0 12px rgba(255, 217, 102, 0.15); margin-top: 6px; text-shadow: 0 0 8px rgba(255, 200, 80, 0.6); }
+    .forum-main { padding: 32px 28px 40px; background-color: #ffffff; }
+    .main-post { background-color: #f6fbff; border: 1.5px solid #b8d6ff; border-radius: 28px; padding: 28px 30px; margin-bottom: 36px; box-shadow: 0 6px 20px -8px rgba(0, 100, 255, 0.15); }
+    .post-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .post-author { display: flex; align-items: center; gap: 14px; }
+    .avatar { width: 52px; height: 52px; background: linear-gradient(135deg, #c0dbff, #7fb2ff); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.5rem; color: #002d66; border: 2px solid white; box-shadow: 0 3px 8px rgba(0, 60, 150, 0.15); text-transform: uppercase; flex-shrink: 0; }
+    .author-info { display: flex; flex-direction: column; min-width: 0; }
+    .author-name { font-weight: 700; color: #002856; font-size: 1.15rem; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; word-break: break-word; }
+    .badge { background-color: #e2efff; border-radius: 30px; font-size: 0.7rem; padding: 2px 10px; font-weight: 700; color: #0047ab; border: 1px solid #b8d6ff; text-transform: uppercase; letter-spacing: 0.3px; white-space: nowrap; }
+    .post-time { font-size: 0.85rem; color: #6b8db0; font-weight: 500; margin-top: 2px; }
+    .post-title { font-size: clamp(1.25rem, 4vw, 1.8rem); font-weight: 800; color: #001f4d; margin: 4px 0 16px; letter-spacing: -0.5px; word-break: break-word; line-height: 1.35; }
+    .post-content { color: #1e3b66; font-size: clamp(0.92rem, 2.6vw, 1.05rem); line-height: 1.7; margin: 0 0 20px; font-weight: 400; word-break: break-word; }
+    .post-footer { display: flex; align-items: center; gap: 20px; padding-top: 18px; border-top: 1.5px dashed #c2dbff; flex-wrap: wrap; }
+    .post-stat { display: flex; align-items: center; gap: 6px; color: #2b5b9e; font-weight: 600; font-size: 0.95rem; background-color: #ffffff; padding: 8px 18px; border-radius: 30px; border: 1px solid #d4e6ff; transition: background-color 0.15s ease; }
+    .post-stat.like-stat:hover { background-color: #eaf3ff; }
+    .reply-section-title { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
+    .reply-section-title h2 { font-size: clamp(1.15rem, 3.6vw, 1.4rem); font-weight: 700; color: #00337a; letter-spacing: -0.3px; }
+    .reply-count-badge { background: #e2efff; padding: 6px 16px; border-radius: 30px; font-weight: 600; color: #0047ab; font-size: 0.9rem; border: 1px solid #b8d6ff; }
+    .reply-list { display: flex; flex-direction: column; gap: 16px; }
+    .reply-item { background-color: #ffffff; border: 1.5px solid #d4e6ff; border-radius: 22px; padding: 20px 24px; transition: 0.2s; box-shadow: 0 2px 8px rgba(0, 80, 200, 0.02); display: flex; gap: 16px; }
+    @media (hover: hover) { .reply-item:hover { border-color: #90b9ff; box-shadow: 0 8px 20px -12px rgba(0, 90, 200, 0.2); } }
+    .reply-left { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; flex-shrink: 0; padding-top: 2px; }
+    .reply-avatar { width: 42px; height: 42px; background: linear-gradient(135deg, #d4e6ff, #a0c8ff); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; color: #002d66; border: 2px solid white; box-shadow: 0 2px 6px rgba(0, 60, 150, 0.12); text-transform: uppercase; }
+    .reply-body { flex: 1; min-width: 0; }
+    .reply-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+    .reply-author { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; min-width: 0; }
+    .reply-author-name { font-weight: 700; color: #002856; font-size: 1rem; word-break: break-word; }
+    .reply-time { font-size: 0.8rem; color: #6b8db0; font-weight: 500; white-space: nowrap; }
+    .reply-content { color: #1e3b66; font-size: clamp(0.9rem, 2.4vw, 0.98rem); line-height: 1.6; word-break: break-word; }
+    .reply-content a { color: #0047ab; font-weight: 700; text-decoration: none; border-bottom: 2px solid #b0cdff; transition: 0.15s; padding-bottom: 1px; word-break: break-all; }
+    .reply-content a:hover { color: #00337a; border-bottom-color: #0047ab; background-color: #e2efff; border-radius: 4px; }
+    .temp-message-list { margin-top: 16px; display: flex; flex-direction: column; gap: 12px; }
+    .temp-message-item { background-color: #ffffff; border: 1.5px solid #d4e6ff; border-left: 5px solid #7fb2ff; border-radius: 18px; padding: 14px 20px; box-shadow: 0 2px 8px rgba(0, 80, 200, 0.03); animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    .temp-message-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 6px; flex-wrap: wrap; }
+    .temp-message-author { font-weight: 700; color: #002856; font-size: 0.95rem; display: flex; align-items: center; gap: 8px; }
+    .temp-message-avatar { width: 26px; height: 26px; background: linear-gradient(135deg, #c0dbff, #7fb2ff); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem; color: #002d66; border: 1.5px solid white; text-transform: uppercase; flex-shrink: 0; }
+    .temp-message-time { font-size: 0.75rem; color: #6b8db0; font-weight: 500; white-space: nowrap; }
+    .temp-message-content { color: #1e3b66; font-size: 0.95rem; line-height: 1.55; word-break: break-word; padding-left: 4px; white-space: pre-wrap; }
+    .divider { height: 2px; background: linear-gradient(90deg, transparent, #b8d6ff, #ffffff, #b8d6ff, transparent); margin: 28px 0 12px; }
+    .forum-footer { background-color: #f0f7ff; padding: 20px 28px; text-align: center; color: #3a6fb0; font-weight: 500; border-top: 1.5px solid #c2dbff; font-size: 0.9rem; letter-spacing: 0.3px; word-break: break-word; }
+    .forum-footer span { color: #0047ab; font-weight: 700; }
+    .speak-fixed-bar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; background: linear-gradient(180deg, #f0f7ff 0%, #ffffff 100%); border-top: 2px solid #b8d6ff; box-shadow: 0 -8px 24px -12px rgba(0, 80, 200, 0.25); padding: 14px 20px calc(12px + env(safe-area-inset-bottom, 0px)) 20px; display: flex; justify-content: center; }
+    .speak-fixed-inner { max-width: 1100px; width: 100%; display: flex; flex-direction: column; gap: 10px; }
+    .speak-fixed-title-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .speak-fixed-title { font-size: 1rem; font-weight: 700; color: #00337a; display: flex; align-items: center; gap: 6px; }
+    .speak-fixed-title::before { content: "💬"; font-size: 1.1rem; }
+    .speak-fixed-tips { font-size: 0.72rem; color: #7f9fc9; font-weight: 500; background: #eaf3ff; padding: 3px 12px; border-radius: 20px; border: 1px solid #cce4ff; white-space: nowrap; }
+    .speak-fixed-inputs { display: flex; gap: 10px; align-items: stretch; flex-wrap: wrap; }
+    .speak-fixed-inputs textarea { flex: 1; min-width: 200px; padding: 12px 18px; border: 1.5px solid #b8d6ff; border-radius: 24px; font-size: 0.95rem; outline: none; transition: all 0.2s ease; background-color: #ffffff; color: #001b3b; font-weight: 500; resize: none; height: 48px; font-family: inherit; line-height: 1.4; }
+    .speak-fixed-inputs textarea:focus { border-color: #0047ab; box-shadow: 0 0 0 4px rgba(0, 110, 255, 0.15); height: 80px; }
+    .speak-fixed-inputs textarea::placeholder { color: #7f9fc9; font-weight: 400; }
+    .speak-fixed-actions { display: flex; gap: 10px; flex-shrink: 0; align-items: flex-start; }
+    .btn { padding: 12px 24px; border-radius: 40px; font-weight: 700; font-size: 0.95rem; border: none; cursor: pointer; transition: 0.2s ease; letter-spacing: 0.3px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; white-space: nowrap; user-select: none; }
+    .btn-primary { background-color: #0047ab; color: white; box-shadow: 0 8px 16px -6px rgba(0, 71, 171, 0.3); border: 1px solid #00337a; }
+    .btn-primary:hover { background-color: #00337a; transform: translateY(-2px); box-shadow: 0 12px 20px -8px #00337a; }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-outline { background-color: #ffffff; color: #0047ab; border: 1.8px solid #b0cdff; }
+    .btn-outline:hover { background-color: #e2efff; border-color: #0047ab; }
+    .speak-thanks { text-align: center; font-size: 0.78rem; font-weight: 600; color: #6b8db0; letter-spacing: 0.5px; padding-top: 2px; border-top: 1px dashed #d4e6ff; margin-top: 2px; }
+    .speak-thanks span { color: #0047ab; font-weight: 700; }
+    @media (max-width: 900px) { .forum-main { padding: 26px 22px 36px; } .main-post { padding: 24px 24px; } }
+    @media (max-width: 700px) {
+      body { padding: 12px 10px 250px 10px; padding-bottom: calc(250px + env(safe-area-inset-bottom, 0px)); }
+      .forum-container { border-radius: 22px; }
+      .forum-header { padding: 24px 16px 32px 16px; border-bottom-width: 2px; }
+      .top-origin { font-size: 0.76rem; padding: 4px 14px; margin-bottom: 12px; }
+      .forum-header h1 { font-size: clamp(1.2rem, 6.5vw, 1.6rem); text-shadow: 0 0 8px rgba(255, 217, 102, 0.9), 0 0 16px rgba(255, 180, 50, 0.6), 1px 1px 0 #b8860b; }
+      .forum-header .subhead { font-size: 0.78rem; padding: 5px 16px; }
+      .forum-main { padding: 18px 14px 30px; }
+      .main-post { padding: 18px 16px; border-radius: 22px; margin-bottom: 26px; }
+      .avatar { width: 44px; height: 44px; font-size: 1.25rem; }
+      .author-name { font-size: 1rem; }
+      .post-time { font-size: 0.78rem; }
+      .post-footer { gap: 12px; padding-top: 14px; }
+      .post-stat { padding: 7px 14px; font-size: 0.88rem; }
+      .reply-item { padding: 14px 14px; gap: 10px; border-radius: 18px; }
+      .reply-avatar { width: 36px; height: 36px; font-size: 0.95rem; }
+      .reply-author-name { font-size: 0.92rem; }
+      .reply-time { font-size: 0.72rem; }
+      .reply-content { font-size: 0.9rem; line-height: 1.55; }
+      .temp-message-item { padding: 12px 14px; border-radius: 14px; border-left-width: 4px; }
+      .temp-message-content { font-size: 0.9rem; }
+      .forum-footer { padding: 16px 16px; font-size: 0.8rem; }
+      .speak-fixed-bar { padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px)) 12px; }
+      .speak-fixed-inner { gap: 8px; }
+      .speak-fixed-title { font-size: 0.92rem; }
+      .speak-fixed-tips { font-size: 0.66rem; padding: 2px 10px; }
+      .speak-fixed-inputs { flex-direction: column; gap: 8px; }
+      .speak-fixed-inputs textarea { min-width: 100%; width: 100%; font-size: 16px; height: 44px; padding: 11px 16px; }
+      .speak-fixed-inputs textarea:focus { height: 72px; }
+      .speak-fixed-actions { width: 100%; justify-content: flex-end; gap: 8px; }
+      .btn { padding: 10px 22px; font-size: 0.9rem; }
+      .speak-thanks { font-size: 0.72rem; }
+    }
+    @media (max-width: 380px) {
+      .forum-header h1 { font-size: 1.1rem; }
+      .top-origin { font-size: 0.68rem; padding: 3px 10px; }
+      .forum-header .subhead { font-size: 0.7rem; padding: 4px 12px; }
+      .post-stat { padding: 6px 11px; font-size: 0.82rem; }
+      .reply-content { font-size: 0.85rem; }
+    }
+    @media (min-width: 1400px) {
+      .forum-container { max-width: 1200px; }
+      .forum-main { padding: 40px 40px 50px; }
+      .main-post { padding: 34px 38px; }
+      .reply-item { padding: 24px 28px; }
+      .post-content { font-size: 1.1rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="forum-container">
+    <header class="forum-header" id="forumHeader">
+      <canvas id="fireworksCanvas"></canvas>
+      <div class="top-origin">原创@<span>EDG ZMJQKA</span></div>
+      <h1>BLG无畏契约分部粉丝讨论区</h1>
+      <div class="subhead">2026新春 · 无畏共进 · 为信念干杯 🧧</div>
+    </header>
+
+    <main class="forum-main">
+      <article class="main-post">
+        <div class="post-header">
+          <div class="post-author">
+            <div class="avatar">W</div>
+            <div class="author-info">
+              <div class="author-name">BLG_Whz铁粉 <span class="badge">铁粉</span></div>
+              <div class="post-time">2026-02-17 00:08（大年初一）</div>
+            </div>
+          </div>
+        </div>
+
+        <h1 class="post-title">BLG除了奶芙和他的仓鼠集体消失了！就连大鼠都消失了！！！</h1>
+
+        <div class="post-content">
+          看了最近训练赛和VCT CN启点赛，whz的决斗位明显更敢操作了，nephh的烟位也稳。今年全球冠军赛真有机会吧？兄弟们怎么看？
+          感觉教练组在战术储备上下了很大功夫，尤其是源工重镇的防守方前压 timing 非常好。希望今年能保持健康，一路杀进全球冠军赛！
+          顺便祝大家新春快乐，BLG无畏契约分部马年冲冲冲！🧧
+        </div>
+
+        <div class="post-footer">
+          <div class="post-stat like-stat" id="mainPostLike" style="cursor:pointer;">
+            <i>🤍</i> <span class="like-count">34</span>
+          </div>
+          <div class="post-stat" style="cursor:default;">
+            <i>💬</i> <span>4 条回复</span>
+          </div>
+        </div>
+      </article>
+
+      <div class="reply-section-title">
+        <h2>💬 全部回复</h2>
+        <span class="reply-count-badge" id="replyCountBadge">4 条回复</span>
+      </div>
+
+      <div class="reply-list" id="replyListContainer"></div>
+      <div class="temp-message-list" id="tempMessageList"></div>
+      <div class="divider"></div>
+    </main>
+
+    <footer class="forum-footer">
+      <span>BLG无畏契约分部粉丝讨论区</span> · 2026新春 · 永远热血，永远相信
+    </footer>
+  </div>
+
+  <div class="speak-fixed-bar">
+    <div class="speak-fixed-inner">
+      <div class="speak-fixed-title-row">
+        <span class="speak-fixed-title">我要发言</span>
+        <span class="speak-fixed-tips">回车发送 · Shift+回车换行</span>
+      </div>
+      <div class="speak-fixed-inputs">
+        <textarea id="speakContentInput" placeholder="说点什么吧…… 新春快乐，支持BLG无畏契约分部！"></textarea>
+        <div class="speak-fixed-actions">
+          <button class="btn btn-outline" id="speakClearBtn">清空</button>
+          <button class="btn btn-primary" id="speakSubmitBtn">发送</button>
+        </div>
+      </div>
+      <div class="speak-thanks">感谢 <span>WEN溫紋</span> 和支持我的小伙伴们</div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // ========== 烟花效果 ==========
+      (function initFireworks() {
+        const canvas = document.getElementById('fireworksCanvas');
+        const header = document.getElementById('forumHeader');
+        if (!canvas || !header) return;
+
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let animationId = null;
+        let width = 0, height = 0;
+        let dpr = window.devicePixelRatio || 1;
+
+        function resizeCanvas() {
+          const rect = header.getBoundingClientRect();
+          width = rect.width;
+          height = rect.height;
+          dpr = Math.min(window.devicePixelRatio || 1, 2);
+          canvas.width = width * dpr;
+          canvas.height = height * dpr;
+          canvas.style.width = width + 'px';
+          canvas.style.height = height + 'px';
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        window.addEventListener('orientationchange', () => { setTimeout(resizeCanvas, 120); });
+
+        const fireworksColors = ['#ffd966', '#ffb347', '#ff8c42', '#ff6b6b', '#ffe066', '#ff9f68', '#f9a826', '#ff7b7b', '#ffc85c', '#ffad5c'];
+
+        function randomColor() { return fireworksColors[Math.floor(Math.random() * fireworksColors.length)]; }
+
+        class Particle {
+          constructor(x, y, color) {
+            this.x = x; this.y = y; this.color = color;
+            this.radius = Math.random() * 2.2 + 1;
+            const angle = Math.random() * Math.PI * 2;
+            const speed = Math.random() * 3.2 + 1;
+            this.vx = Math.cos(angle) * speed;
+            this.vy = Math.sin(angle) * speed;
+            this.alpha = 1;
+            this.decay = Math.random() * 0.015 + 0.008;
+            this.gravity = 0.045;
+            this.trail = []; this.trailLength = 5;
+          }
+          update() {
+            this.trail.push({ x: this.x, y: this.y });
+            if (this.trail.length > this.trailLength) this.trail.shift();
+            this.x += this.vx; this.y += this.vy;
+            this.vy += this.gravity;
+            this.vx *= 0.99; this.vy *= 0.99;
+            this.alpha -= this.decay;
+            if (this.alpha < 0) this.alpha = 0;
+          }
+          draw() {
+            if (this.alpha <= 0) return;
+            if (this.trail.length > 1) {
+              ctx.beginPath();
+              ctx.strokeStyle = this.color;
+              ctx.lineWidth = this.radius * 1.6;
+              ctx.lineCap = 'round';
+              ctx.globalAlpha = this.alpha * 0.35;
+              ctx.moveTo(this.trail[0].x, this.trail[0].y);
+              for (let i = 1; i < this.trail.length; i++) ctx.lineTo(this.trail[i].x, this.trail[i].y);
+              ctx.stroke();
+            }
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.globalAlpha = this.alpha;
+            ctx.shadowColor = this.color;
+            ctx.shadowBlur = 12;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+            ctx.globalAlpha = 1;
+          }
+        }
+
+        function createFirework() {
+          if (width === 0 || height === 0) return;
+          const x = Math.random() * width * 0.8 + width * 0.1;
+          const y = Math.random() * height * 0.55 + height * 0.1;
+          const color = randomColor();
+          const count = Math.floor(Math.random() * 30) + 40;
+          for (let i = 0; i < count; i++) particles.push(new Particle(x, y, color));
+          const secondColor = randomColor();
+          const secondCount = Math.floor(Math.random() * 15) + 15;
+          for (let i = 0; i < secondCount; i++) particles.push(new Particle(x, y, secondColor));
+        }
+
+        function animate() {
+          ctx.clearRect(0, 0, width, height);
+          const gradient = ctx.createRadialGradient(width / 2, height / 2, 0, width / 2, height / 2, Math.max(width, height) / 1.5);
+          gradient.addColorStop(0, 'rgba(10, 31, 61, 0.0)');
+          gradient.addColorStop(1, 'rgba(10, 31, 61, 0.25)');
+          ctx.fillStyle = gradient;
+          ctx.fillRect(0, 0, width, height);
+
+          for (let i = particles.length - 1; i >= 0; i--) {
+            const p = particles[i];
+            p.update(); p.draw();
+            if (p.alpha <= 0) particles.splice(i, 1);
+          }
+          if (Math.random() < 0.035 && particles.length < 380) createFirework();
+          animationId = requestAnimationFrame(animate);
+        }
+
+        function startFireworks() {
+          resizeCanvas();
+          setTimeout(() => {
+            createFirework();
+            setTimeout(() => createFirework(), 260);
+            setTimeout(() => createFirework(), 520);
+          }, 150);
+          if (animationId) cancelAnimationFrame(animationId);
+          animate();
+        }
+
+        if (document.readyState === 'complete') startFireworks();
+        else window.addEventListener('load', startFireworks);
+      })();
+
+      // ========== 论坛功能 ==========
+      let mainPost = { likes: 34, liked: false };
+      let replies = [
+        { id: 'r1', author: 'Knight9_迷弟', badge: '应援团', avatarLetter: 'K', time: '2026-02-17 00:15（大年初一）', content: '新年快乐！确实！whz最近的状态太顶了，雷兹和捷风都玩得很秀。nephh的烟位给得也很舒服，感觉今年真有戏。' },
+        { id: 'r2', author: 'BLG_唯爱nephh', badge: '老粉', avatarLetter: 'N', time: '2026-02-17 00:32（大年初一）', content: '作为nephh的老粉，今年他的进步真的肉眼可见。之前一直被诟病的残局处理也好了很多，继续加油！新春快乐！' },
+        { id: 'r3', author: '板蓝根冲剂', badge: '乐子人', avatarLetter: '板', time: '2026-02-17 01:05（大年初一）', content: '别奶别奶，先稳住VCT CN再说。不过说实话这套阵容的上限确实高，就看大赛心态了。更多赛事数据可以看 <a href="https://valorantesports.com/" target="_blank" rel="noopener noreferrer">VCT 官方赛事页</a>。新年快乐！' },
+        { id: 'r4', author: 'BLG_奶芙守护者', badge: '新粉', avatarLetter: '奶', time: '2026-02-17 01:28（大年初一）', content: '仓鼠和大鼠都消失了也太好笑了哈哈哈哈！不过说真的，奶芙最近的状态确实稳，希望新的一年BLG全员健康，一起冲进全球冠军赛！🧧🐹 顺便 <a href="123000.html">点这里进入后台管理</a>。' }
+      ];
+      let tempMessages = [];
+
+      const replyListContainer = document.getElementById('replyListContainer');
+      const replyCountBadge = document.getElementById('replyCountBadge');
+      const mainPostLike = document.getElementById('mainPostLike');
+      const speakContentInput = document.getElementById('speakContentInput');
+      const speakSubmitBtn = document.getElementById('speakSubmitBtn');
+      const speakClearBtn = document.getElementById('speakClearBtn');
+      const tempMessageList = document.getElementById('tempMessageList');
+
+      function escapeHtml(text) {
+        if (!text) return '';
+        return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+      }
+
+      function getCurrentTime() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        return `${year}-${month}-${day} ${hours}:${minutes}`;
+      }
+
+      function renderReplies() {
+        if (!replyListContainer) return;
+        if (replyCountBadge) replyCountBadge.textContent = `${replies.length} 条回复`;
+        if (replies.length === 0) {
+          replyListContainer.innerHTML = `<div style="text-align: center; padding: 40px; background: #f6fbff; border-radius: 24px; color: #4a7bb5; border: 1px dashed #b8d6ff;">✨ 还没有回复，快来抢沙发吧 ✨</div>`;
+          return;
+        }
+        let html = '';
+        replies.forEach(reply => {
+          html += `
+            <div class="reply-item" data-reply-id="${reply.id}">
+              <div class="reply-left"><div class="reply-avatar">${reply.avatarLetter}</div></div>
+              <div class="reply-body">
+                <div class="reply-header">
+                  <div class="reply-author">
+                    <span class="reply-author-name">${escapeHtml(reply.author)}</span>
+                    ${reply.badge ? `<span class="badge">${escapeHtml(reply.badge)}</span>` : ''}
+                  </div>
+                  <span class="reply-time">${escapeHtml(reply.time)}</span>
+                </div>
+                <div class="reply-content">${reply.content}</div>
+              </div>
+            </div>`;
+        });
+        replyListContainer.innerHTML = html;
+      }
+
+      function renderTempMessages() {
+        if (!tempMessageList) return;
+        if (tempMessages.length === 0) { tempMessageList.innerHTML = ''; return; }
+        let html = '';
+        tempMessages.forEach(msg => {
+          html += `
+            <div class="temp-message-item">
+              <div class="temp-message-header">
+                <div class="temp-message-author">
+                  <div class="temp-message-avatar">B</div>
+                  BLG
+                </div>
+                <span class="temp-message-time">${escapeHtml(msg.time)}</span>
+              </div>
+              <div class="temp-message-content">${escapeHtml(msg.content)}</div>
+            </div>`;
+        });
+        tempMessageList.innerHTML = html;
+      }
+
+      function submitTempMessage() {
+        const contentValue = speakContentInput.value.trim();
+        if (!contentValue) { speakContentInput.focus(); return; }
+        tempMessages.push({ id: 't' + Date.now() + Math.random().toString(36).substring(2, 6), time: getCurrentTime(), content: contentValue });
+        speakContentInput.value = '';
+        speakContentInput.focus();
+        renderTempMessages();
+      }
+
+      function clearSpeakInputs() { speakContentInput.value = ''; speakContentInput.focus(); }
+
+      function handleMainPostLike() {
+        if (mainPost.liked) { mainPost.likes -= 1; mainPost.liked = false; }
+        else { mainPost.likes += 1; mainPost.liked = true; }
+        if (mainPostLike) {
+          const icon = mainPostLike.querySelector('i');
+          const countSpan = mainPostLike.querySelector('.like-count');
+          if (icon) icon.textContent = mainPost.liked ? '❤️' : '🤍';
+          if (countSpan) countSpan.textContent = mainPost.likes;
+        }
+      }
+
+      function init() {
+        renderReplies();
+        renderTempMessages();
+        if (mainPostLike) mainPostLike.addEventListener('click', handleMainPostLike);
+        if (speakSubmitBtn) speakSubmitBtn.addEventListener('click', submitTempMessage);
+        if (speakClearBtn) speakClearBtn.addEventListener('click', clearSpeakInputs);
+        if (speakContentInput) {
+          speakContentInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey && !e.ctrlKey && !e.altKey && !e.metaKey && !e.isComposing) {
+              e.preventDefault();
+              submitTempMessage();
+            }
+            if (e.ctrlKey && e.key === 'Enter') {
+              e.preventDefault();
+              submitTempMessage();
+            }
+          });
+        }
+      }
+
+      init();
+    })();
+  </script>
+</body>
+</html>
