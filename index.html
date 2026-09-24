@@ -330,7 +330,7 @@
         { id: 'r1', author: 'Knight9_迷弟', badge: '应援团', avatarLetter: 'K', time: '2026-02-17 00:15（大年初一）', content: '新年快乐！确实！whz最近的状态太顶了，雷兹和捷风都玩得很秀。nephh的烟位给得也很舒服，感觉今年真有戏。' },
         { id: 'r2', author: 'BLG_唯爱nephh', badge: '老粉', avatarLetter: 'N', time: '2026-02-17 00:32（大年初一）', content: '作为nephh的老粉，今年他的进步真的肉眼可见。之前一直被诟病的残局处理也好了很多，继续加油！新春快乐！' },
         { id: 'r3', author: '板蓝根冲剂', badge: '乐子人', avatarLetter: '板', time: '2026-02-17 01:05（大年初一）', content: '别奶别奶，先稳住VCT CN再说。不过说实话这套阵容的上限确实高，就看大赛心态了。更多赛事数据可以看 <a href="https://valorantesports.com/" target="_blank" rel="noopener noreferrer">VCT 官方赛事页</a>。新年快乐！' },
-        { id: 'r4', author: 'BLG_奶芙守护者', badge: '新粉', avatarLetter: '奶', time: '2026-02-17 01:28（大年初一）', content: '仓鼠和大鼠都消失了也太好笑了哈哈哈哈！不过说真的，奶芙最近的状态确实稳，希望新的一年BLG全员健康，一起冲进全球冠军赛！🧧🐹 顺便 <a href="index000.html">点这里进入后台管理</a>。' }
+        { id: 'r4', author: 'BLG_奶芙守护者', badge: '新粉', avatarLetter: '奶', time: '2026-02-17 01:28（大年初一）', content: '仓鼠和大鼠都消失了也太好笑了哈哈哈哈！不过说真的，奶芙最近的状态确实稳，希望新的一年BLG全员健康，一起冲进全球冠军赛！🧧🐹 顺便 <a href="BLG后台.html">点这里进入后台管理</a>。' }
       ];
       let tempMessages = [];
 
@@ -449,5 +449,147 @@
       init();
     })();
   </script>
+  <!-- ============================================================
+       防查看源代码防护（方案一 + 方案二）
+       ============================================================ -->
+  <script>
+  (function() {
+    // ============================================================
+    // 方案一：禁用右键、F12、Ctrl+Shift+I/J/C、Ctrl+U、Ctrl+S
+    // ============================================================
+
+    // 1. 禁用右键菜单
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+      return false;
+    });
+
+    // 2. 禁用快捷键
+    document.addEventListener('keydown', function(e) {
+      // F12
+      if (e.key === 'F12' || e.keyCode === 123) {
+        e.preventDefault();
+        return false;
+      }
+      // Ctrl+Shift+I（开发者工具）
+      if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.keyCode === 73)) {
+        e.preventDefault();
+        return false;
+      }
+      // Ctrl+Shift+J（控制台）
+      if (e.ctrlKey && e.shiftKey && (e.key === 'J' || e.key === 'j' || e.keyCode === 74)) {
+        e.preventDefault();
+        return false;
+      }
+      // Ctrl+Shift+C（元素选择器）
+      if (e.ctrlKey && e.shiftKey && (e.key === 'C' || e.key === 'c' || e.keyCode === 67)) {
+        e.preventDefault();
+        return false;
+      }
+      // Ctrl+U（查看源代码）
+      if (e.ctrlKey && (e.key === 'U' || e.key === 'u' || e.keyCode === 85)) {
+        e.preventDefault();
+        return false;
+      }
+      // Ctrl+S（保存网页）
+      if (e.ctrlKey && (e.key === 'S' || e.key === 's' || e.keyCode === 83)) {
+        e.preventDefault();
+        return false;
+      }
+      // Ctrl+P（打印，也能看到代码结构）
+      if (e.ctrlKey && (e.key === 'P' || e.key === 'p' || e.keyCode === 80)) {
+        e.preventDefault();
+        return false;
+      }
+    });
+
+    // 3. 禁止拖拽
+    document.addEventListener('dragstart', function(e) {
+      e.preventDefault();
+    });
+
+    // ============================================================
+    // 方案二：开发者工具检测（打开后显示警告页）
+    // ============================================================
+
+    let devtoolsOpen = false;
+    const threshold = 160;   // 窗口尺寸差阈值（像素）
+    let originalBody = null; // 保存原始页面内容
+
+    // 保存原始 body 内容，方便关闭开发者工具后恢复
+    function saveOriginalBody() {
+      if (!originalBody) {
+        originalBody = document.body.innerHTML;
+      }
+    }
+
+    function checkDevTools() {
+      const widthDiff = window.outerWidth - window.innerWidth;
+      const heightDiff = window.outerHeight - window.innerHeight;
+
+      // 如果宽或高的差值超过阈值，认为开发者工具已打开
+      if (widthDiff > threshold || heightDiff > threshold) {
+        if (!devtoolsOpen) {
+          devtoolsOpen = true;
+          saveOriginalBody();
+          // 显示警告页
+          document.body.innerHTML = `
+            <div style="
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              flex-direction: column;
+              height: 100vh;
+              background: linear-gradient(145deg, #0a1f3d, #123a6b);
+              color: #ffd966;
+              font-family: system-ui, sans-serif;
+              text-align: center;
+              padding: 20px;
+            ">
+              <div style="font-size: 4rem; margin-bottom: 16px;">⚠️</div>
+              <div style="font-size: 1.6rem; font-weight: 800; letter-spacing: 1px; margin-bottom: 12px;">
+                检测到开发者工具已打开
+              </div>
+              <div style="font-size: 1rem; color: #b8d6ff; font-weight: 500; max-width: 360px; line-height: 1.6;">
+                请关闭开发者工具后刷新页面（按 F5 或 Ctrl+R）<br>
+                本站内容受保护，禁止查看和复制源代码
+              </div>
+            </div>
+          `;
+        }
+      } else {
+        // 开发者工具已关闭
+        if (devtoolsOpen && originalBody) {
+          devtoolsOpen = false;
+          document.body.innerHTML = originalBody;
+          // 恢复后需要重新绑定事件（因为 innerHTML 替换会丢失事件）
+          // 这里为了简单，提示用户刷新页面
+          // 或者调用页面的初始化函数（如果有）
+          if (typeof init === 'function') {
+            try { init(); } catch (e) {}
+          }
+        }
+      }
+    }
+
+    // 每 1 秒检测一次
+    setInterval(checkDevTools, 1000);
+
+    // 页面加载时也检测一次
+    window.addEventListener('load', function() {
+      setTimeout(checkDevTools, 500);
+    });
+
+    // ============================================================
+    // 额外：禁用浏览器打印（防止通过打印预览查看完整 DOM）
+    // ============================================================
+    window.addEventListener('beforeprint', function(e) {
+      e.preventDefault();
+      document.body.innerHTML = '<div style="text-align:center;padding:60px;font-size:1.4rem;color:#0047ab;font-weight:800;">🖨️ 禁止打印此页面</div>';
+    });
+
+  })();
+  </script>
+
 </body>
 </html>
